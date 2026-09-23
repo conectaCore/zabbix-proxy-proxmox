@@ -6,31 +6,11 @@ source <(curl -fsSL "${COMMUNITY_SCRIPTS_CORE_URL:-https://raw.githubusercontent
 
 load_functions
 
-GEN_MAC=02:$(openssl rand -hex 5 | awk '{print toupper($0)}' | sed 's/\(..\)/\1:/g; s/.$//')
-
 APP="Zabbix Proxy"
 APP_TYPE="vm"
 NSAPP="zabbix-proxy-vm"
 
-var_os="ubuntu"
-var_version="24.04"
-
-OS_TYPE="ubuntu"
-OS_VERSION="24.04"
-OS_CODENAME="noble"
-OS_DISPLAY="Ubuntu 24.04 LTS"
-
-USE_CLOUD_INIT="yes"
-CLOUDINIT_ENABLE="yes"
-
-header_info() {
-clear
-echo
-echo "========================================"
-echo "          ZABBIX PROXY VM"
-echo "========================================"
-echo
-}
+GEN_MAC=02:$(openssl rand -hex 5 | awk '{print toupper($0)}' | sed 's/\(..\)/\1:/g; s/.$//')
 
 default_settings() {
 
@@ -102,9 +82,19 @@ echo
 
 }
 
+header_info() {
+echo
+echo "========================================"
+echo "          ZABBIX PROXY VM"
+echo "========================================"
+echo
+}
+
+header_info
+
 vm_preflight
 
-vm_start_script "Usar configurações padrão?" 12 60
+vm_start_script "Use Default Settings?" 10 58
 
 echo
 echo "========================================"
@@ -118,5 +108,6 @@ echo "CPU              : ${CORE_COUNT} cores"
 echo "RAM              : ${RAM_SIZE} MiB"
 echo "Disco            : ${DISK_SIZE}"
 echo "Bridge           : ${BRG}"
+echo "MAC              : ${MAC}"
 echo
 echo "Nenhuma VM foi criada."
