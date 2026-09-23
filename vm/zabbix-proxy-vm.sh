@@ -18,16 +18,21 @@ CORE_FILE="$(mktemp)"
 cleanup() {
 rm -f "$CORE_FILE"
 }
+
 trap cleanup EXIT
 
 echo "Baixando vm-core.func..."
 
 if ! curl -fsSL 
-"${COMMUNITY_SCRIPTS_CORE_URL}/pve/vm-core.func" 
--o "$CORE_FILE"; then
+-o "$CORE_FILE" 
+"${COMMUNITY_SCRIPTS_CORE_URL}/pve/vm-core.func"; then
+
+```
 echo
 echo "ERRO: não foi possível baixar o vm-core.func."
 exit 1
+```
+
 fi
 
 echo "Download concluído."
@@ -67,4 +72,5 @@ echo
 echo "Nenhuma VM foi criada."
 echo "Nenhum pacote foi instalado."
 echo
+
 exit 0
