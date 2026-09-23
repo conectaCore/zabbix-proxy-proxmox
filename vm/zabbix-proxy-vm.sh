@@ -6,19 +6,21 @@ echo "========================================"
 echo "        ${APP}"
 echo "========================================"
 echo
-echo "1. Carregando Community Scripts VM Core..."
+echo "Carregando Community Scripts VM Core..."
 
 source <(curl -fsSL "https://raw.githubusercontent.com/community-scripts/core/main/pve/vm-core.func")
 
-echo "2. vm-core.func carregado."
+echo "Core carregado."
+echo
 
 load_functions
 
-echo "3. load_functions executado."
+echo "load_functions executado."
 echo
 echo "========================================"
-echo "       TESTE CONCLUÍDO"
+echo "       TESTE CONCLUÍDO COM SUCESSO"
 echo "========================================"
 echo
+echo "Aplicação: ${APP}"
 echo "Nenhuma VM foi criada."
 echo "Nenhum pacote foi instalado."
