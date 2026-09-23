@@ -1,23 +1,29 @@
+```bash
 #!/usr/bin/env bash
 
-# ============================================================
-# Zabbix Proxy - Proxmox VE
-# ============================================================
-
-set -e
+set -Eeuo pipefail
 
 APP="Zabbix Proxy"
 
-clear 2>/dev/null || true
+# Community Scripts VM Core
+source <(
+  curl -fsSL \
+  "${COMMUNITY_SCRIPTS_CORE_URL:-https://raw.githubusercontent.com/community-scripts/core/main}/pve/vm-core.func"
+)
 
+load_functions
+
+clear
+
+echo "========================================"
+echo "        ${APP}"
+echo "========================================"
 echo
-echo "============================================================"
-echo "              ${APP} - PROXMOX VE"
-echo "============================================================"
+echo "Community Scripts VM Core carregado!"
 echo
-echo "Script carregado com sucesso!"
+echo "APP: ${APP}"
+echo "Hostname: $(hostname)"
+echo "Data: $(date)"
 echo
-echo "Sistema: $(hostname)"
-echo "Data:    $(date)"
-echo
-echo "============================================================"
+echo "Teste concluído."
+```
