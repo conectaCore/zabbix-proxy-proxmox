@@ -19,7 +19,7 @@ VERBOSE="no"
 default_settings() {
 VMID=$(get_valid_nextid)
 
-```
+
 DISK_SIZE="16G"
 HN="zabbix-proxy"
 CORE_COUNT="2"
@@ -32,14 +32,14 @@ START_VM="yes"
 METHOD="default"
 
 vm_echo_default_settings
-```
+
 
 }
 
 advanced_settings() {
 METHOD="advanced"
 
-```
+
 echo
 echo "========================================"
 echo "       ADVANCED FUNCIONOU"
@@ -52,7 +52,7 @@ echo "RAM        : 2048 MiB"
 echo "Disco      : 16G"
 echo "Bridge     : vmbr0"
 echo
-```
+
 
 }
 
