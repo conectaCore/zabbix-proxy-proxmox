@@ -6,6 +6,8 @@ source <(curl -fsSL "${COMMUNITY_SCRIPTS_CORE_URL:-https://raw.githubusercontent
 
 load_functions
 
+GEN_MAC=02:$(openssl rand -hex 5 | awk '{print toupper($0)}' | sed 's/\(..\)/\1:/g; s/.$//')
+
 APP="Zabbix Proxy"
 APP_TYPE="vm"
 NSAPP="zabbix-proxy-vm"
