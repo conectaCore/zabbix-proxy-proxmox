@@ -1,26 +1,32 @@
 #!/usr/bin/env bash
 
-APP="Zabbix Proxy"
+COMMUNITY_SCRIPTS_URL="${COMMUNITY_SCRIPTS_URL:-https://raw.githubusercontent.com/community-scripts/ProxmoxVE/main}"
 
-echo "========================================"
-echo "        ${APP}"
-echo "========================================"
-echo
-echo "Carregando Community Scripts VM Core..."
-
-source <(curl -fsSL "https://raw.githubusercontent.com/community-scripts/core/main/pve/vm-core.func")
-
-echo "Core carregado."
-echo
+source <(curl -fsSL "${COMMUNITY_SCRIPTS_CORE_URL:-https://raw.githubusercontent.com/community-scripts/core/main}/pve/vm-core.func")
 
 load_functions
 
-echo "load_functions executado."
+APP="Zabbix Proxy"
+APP_TYPE="vm"
+NSAPP="zabbix-proxy-vm"
+
 echo
 echo "========================================"
-echo "       TESTE CONCLUÍDO COM SUCESSO"
+echo "        Zabbix Proxy"
 echo "========================================"
 echo
-echo "Aplicação: ${APP}"
+echo "Executando verificações do Proxmox..."
+echo
+
+vm_preflight
+
+echo
+echo "========================================"
+echo "        PREFLIGHT CONCLUÍDO"
+echo "========================================"
+echo
+echo "O ambiente Proxmox passou pelo preflight."
+echo
 echo "Nenhuma VM foi criada."
 echo "Nenhum pacote foi instalado."
+echo
