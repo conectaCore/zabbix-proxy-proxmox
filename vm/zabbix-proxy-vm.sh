@@ -1,14 +1,60 @@
 #!/usr/bin/env bash
 
-set -Eeuo pipefail
+COMMUNITY_SCRIPTS_URL="${COMMUNITY_SCRIPTS_URL:-https://raw.githubusercontent.com/community-scripts/ProxmoxVE/main}"
 
-APP="Zabbix Proxy"
-
-source <(curl -fsSL "https://raw.githubusercontent.com/community-scripts/core/main/pve/vm-core.func")
+source <(curl -fsSL "${COMMUNITY_SCRIPTS_CORE_URL:-https://raw.githubusercontent.com/community-scripts/core/main}/pve/vm-core.func")
 
 load_functions
 
-GEN_MAC="02:$(openssl rand -hex 5 | tr '[:lower:]' '[:upper:]' | sed 's/\(..\)/\1:/g; s/:$//')"
+APP="Zabbix Proxy"
+APP_TYPE="vm"
+NSAPP="zabbix-proxy-vm"
+
+ARCH=$(dpkg --print-architecture)
+GEN_MAC=02:$(openssl rand -hex 5 | awk '{print toupper($0)}' | sed 's/\(..\)/\1:/g; s/.$//')
+
+METHOD=""
+VERBOSE="no"
+
+default_settings() {
+VMID=$(get_valid_nextid)
+
+```
+DISK_SIZE="16G"
+HN="zabbix-proxy"
+CORE_COUNT="2"
+RAM_SIZE="2048"
+BRG="vmbr0"
+MAC="$GEN_MAC"
+VLAN=""
+MTU=""
+START_VM="yes"
+METHOD="default"
+
+vm_echo_default_settings
+```
+
+}
+
+advanced_settings() {
+METHOD="advanced"
+
+```
+echo
+echo "========================================"
+echo "       ADVANCED FUNCIONOU"
+echo "========================================"
+echo
+echo "VM ID      : $(get_valid_nextid)"
+echo "Hostname   : zabbix-proxy"
+echo "CPU Cores  : 2"
+echo "RAM        : 2048 MiB"
+echo "Disco      : 16G"
+echo "Bridge     : vmbr0"
+echo
+```
+
+}
 
 header_info() {
 echo
@@ -18,66 +64,18 @@ echo "========================================"
 echo
 }
 
-default_settings() {
-VMID="$(get_valid_nextid)"
-DISK_SIZE="16G"
-HN="zabbix-proxy"
-CORE_COUNT="2"
-RAM_SIZE="2048"
-BRG="vmbr0"
-MAC="$GEN_MAC"
-START_VM="yes"
-METHOD="default"
+header_info
 
-```
+vm_preflight
+
+vm_start_script "Use Default Settings?" 10 58
+
 echo
 echo "========================================"
-echo "       CONFIGURAÇÃO DEFAULT"
+echo "             RESULTADO"
 echo "========================================"
 echo
-echo "VM ID       : ${VMID}"
-echo "Hostname    : ${HN}"
-echo "CPU Cores   : ${CORE_COUNT}"
-echo "RAM         : ${RAM_SIZE} MiB"
-echo "Disco       : ${DISK_SIZE}"
-echo "Bridge      : ${BRG}"
-echo "MAC         : ${MAC}"
-echo "Iniciar VM  : ${START_VM}"
+echo "Método escolhido: ${METHOD}"
 echo
-```
-
-}
-
-advanced_settings() {
-METHOD="advanced"
-
-```
-VMID="$(get_valid_nextid)"
-
-if ! VMID=$(whiptail \
-    --backtitle "Proxmox VE Helper Scripts" \
-    --title "VIRTUAL MACHINE ID" \
-    --inputbox "Set Virtual Machine ID" 8 58 "$VMID" \
-    3>&1 1>&2 2>&3
-); then
-    exit 0
-fi
-
-HN="zabbix-proxy"
-
-if ! HN=$(whiptail \
-    --backtitle "Proxmox VE Helper Scripts" \
-    --title "HOSTNAME" \
-    --inputbox "Set Hostname" 8 58 "$HN" \
-    3>&1 1>&2 2>&3
-); then
-    exit 0
-fi
-
-if ! CORE_COUNT=$(whiptail \
-    --backtitle "Proxmox VE Helper Scripts" \
-    --title "CPU CORES" \
-    --inputbox "Set CPU Cores" 8 58 "2" \
-    3>&1 1>&2 2>&3
-); then
-```
+echo "Nenhuma VM foi criada."
+echo "Nenhum pacote foi instalado."
