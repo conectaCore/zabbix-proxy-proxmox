@@ -1,24 +1,23 @@
 #!/usr/bin/env bash
 
-COMMUNITY_SCRIPTS_URL="${COMMUNITY_SCRIPTS_URL:-https://raw.githubusercontent.com/community-scripts/ProxmoxVE/main}"
-
-source <(curl -fsSL "${COMMUNITY_SCRIPTS_CORE_URL:-https://raw.githubusercontent.com/community-scripts/core/main}/pve/vm-core.func")
-
-load_functions
-
 APP="Zabbix Proxy"
 
 echo "========================================"
 echo "        ${APP}"
 echo "========================================"
 echo
-echo "Community Scripts VM Core carregado!"
-echo
-echo "Hostname : $(hostname)"
-echo "Data     : $(date)"
+echo "1. Carregando Community Scripts VM Core..."
+
+source <(curl -fsSL "https://raw.githubusercontent.com/community-scripts/core/main/pve/vm-core.func")
+
+echo "2. vm-core.func carregado."
+
+load_functions
+
+echo "3. load_functions executado."
 echo
 echo "========================================"
-echo "         TESTE CONCLUÍDO"
+echo "       TESTE CONCLUÍDO"
 echo "========================================"
 echo
 echo "Nenhuma VM foi criada."
