@@ -28,7 +28,7 @@ BRG="vmbr0"
 MAC="$GEN_MAC"
 START_VM="yes"
 
-```
+
 echo
 echo "========================================"
 echo "       CONFIGURAÇÃO DEFAULT"
@@ -43,7 +43,7 @@ echo "Bridge      : ${BRG}"
 echo "MAC         : ${MAC}"
 echo "Iniciar VM  : ${START_VM}"
 echo
-```
+
 
 }
 
