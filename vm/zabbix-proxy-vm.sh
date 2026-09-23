@@ -24,7 +24,7 @@ echo
 
 default_settings() {
 
-```
+
 VMID="$(get_valid_nextid)"
 DISK_SIZE="16G"
 HN="zabbix-proxy"
@@ -51,14 +51,13 @@ echo "Disco       : ${DISK_SIZE}"
 echo "Bridge      : ${BRG}"
 echo "MAC         : ${MAC}"
 echo "Iniciar VM  : ${START_VM}"
-echo
-```
+
 
 }
 
 advanced_settings() {
 
-```
+
 METHOD="advanced"
 
 echo
@@ -70,8 +69,7 @@ echo "Advanced Settings funcionando."
 echo
 echo "VM ID disponível: $(get_valid_nextid)"
 echo "Hostname padrão : zabbix-proxy"
-echo
-```
+
 
 }
 
