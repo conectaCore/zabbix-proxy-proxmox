@@ -1,25 +1,31 @@
 #!/usr/bin/env bash
 
-COMMUNITY_SCRIPTS_URL="${COMMUNITY_SCRIPTS_URL:-https://raw.githubusercontent.com/community-scripts/ProxmoxVE/main}"
-
-source <(curl -fsSL "${COMMUNITY_SCRIPTS_CORE_URL:-https://raw.githubusercontent.com/community-scripts/core/main}/pve/vm-core.func")
-
-load_functions
+set -Eeuo pipefail
 
 APP="Zabbix Proxy"
 APP_TYPE="vm"
 NSAPP="zabbix-proxy-vm"
 
-ARCH=$(dpkg --print-architecture)
-GEN_MAC=02:$(openssl rand -hex 5 | awk '{print toupper($0)}' | sed 's/\(..\)/\1:/g; s/.$//')
+source <(curl -fsSL "https://raw.githubusercontent.com/community-scripts/core/main/pve/vm-core.func")
+
+load_functions
+
+GEN_MAC="02:$(openssl rand -hex 5 | tr '[:lower:]' '[:upper:]' | sed 's/\(..\)/\1:/g; s/:$//')"
 
 METHOD=""
-VERBOSE="no"
+
+header_info() {
+echo
+echo "========================================"
+echo "          ZABBIX PROXY VM"
+echo "========================================"
+echo
+}
 
 default_settings() {
-VMID=$(get_valid_nextid)
 
-
+```
+VMID="$(get_valid_nextid)"
 DISK_SIZE="16G"
 HN="zabbix-proxy"
 CORE_COUNT="2"
@@ -29,39 +35,44 @@ MAC="$GEN_MAC"
 VLAN=""
 MTU=""
 START_VM="yes"
+VERBOSE="no"
 METHOD="default"
 
-vm_echo_default_settings
-
+echo
+echo "========================================"
+echo "       CONFIGURAÇÃO DEFAULT"
+echo "========================================"
+echo
+echo "VM ID       : ${VMID}"
+echo "Hostname    : ${HN}"
+echo "CPU Cores   : ${CORE_COUNT}"
+echo "RAM         : ${RAM_SIZE} MiB"
+echo "Disco       : ${DISK_SIZE}"
+echo "Bridge      : ${BRG}"
+echo "MAC         : ${MAC}"
+echo "Iniciar VM  : ${START_VM}"
+echo
+```
 
 }
 
 advanced_settings() {
+
+```
 METHOD="advanced"
 
-
 echo
 echo "========================================"
-echo "       ADVANCED FUNCIONOU"
+echo "       CONFIGURAÇÃO ADVANCED"
 echo "========================================"
 echo
-echo "VM ID      : $(get_valid_nextid)"
-echo "Hostname   : zabbix-proxy"
-echo "CPU Cores  : 2"
-echo "RAM        : 2048 MiB"
-echo "Disco      : 16G"
-echo "Bridge     : vmbr0"
+echo "Advanced Settings funcionando."
 echo
-
-
-}
-
-header_info() {
+echo "VM ID disponível: $(get_valid_nextid)"
+echo "Hostname padrão : zabbix-proxy"
 echo
-echo "========================================"
-echo "          ZABBIX PROXY VM"
-echo "========================================"
-echo
+```
+
 }
 
 header_info
@@ -79,3 +90,4 @@ echo "Método escolhido: ${METHOD}"
 echo
 echo "Nenhuma VM foi criada."
 echo "Nenhum pacote foi instalado."
+echo
