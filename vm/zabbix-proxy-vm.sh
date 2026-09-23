@@ -27,8 +27,9 @@ RAM_SIZE="2048"
 BRG="vmbr0"
 MAC="$GEN_MAC"
 START_VM="yes"
+METHOD="default"
 
-
+```
 echo
 echo "========================================"
 echo "       CONFIGURAÇÃO DEFAULT"
@@ -43,22 +44,40 @@ echo "Bridge      : ${BRG}"
 echo "MAC         : ${MAC}"
 echo "Iniciar VM  : ${START_VM}"
 echo
-
+```
 
 }
 
-header_info
+advanced_settings() {
+METHOD="advanced"
 
-vm_preflight
+```
+VMID="$(get_valid_nextid)"
 
-echo "  ⚙️  Using Default Settings"
+if ! VMID=$(whiptail \
+    --backtitle "Proxmox VE Helper Scripts" \
+    --title "VIRTUAL MACHINE ID" \
+    --inputbox "Set Virtual Machine ID" 8 58 "$VMID" \
+    3>&1 1>&2 2>&3
+); then
+    exit 0
+fi
 
-default_settings
+HN="zabbix-proxy"
 
-echo
-echo "========================================"
-echo "           TESTE CONCLUÍDO"
-echo "========================================"
-echo
-echo "Nenhuma VM foi criada."
-echo "Nenhum pacote foi instalado."
+if ! HN=$(whiptail \
+    --backtitle "Proxmox VE Helper Scripts" \
+    --title "HOSTNAME" \
+    --inputbox "Set Hostname" 8 58 "$HN" \
+    3>&1 1>&2 2>&3
+); then
+    exit 0
+fi
+
+if ! CORE_COUNT=$(whiptail \
+    --backtitle "Proxmox VE Helper Scripts" \
+    --title "CPU CORES" \
+    --inputbox "Set CPU Cores" 8 58 "2" \
+    3>&1 1>&2 2>&3
+); then
+```
