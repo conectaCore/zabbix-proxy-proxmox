@@ -6,7 +6,6 @@ APP="Zabbix Proxy"
 APP_TYPE="vm"
 NSAPP="zabbix-proxy-vm"
 
-COMMUNITY_SCRIPTS_URL="${COMMUNITY_SCRIPTS_URL:-https://raw.githubusercontent.com/community-scripts/ProxmoxVE/main}"
 COMMUNITY_SCRIPTS_CORE_URL="${COMMUNITY_SCRIPTS_CORE_URL:-https://raw.githubusercontent.com/community-scripts/core/main}"
 
 source <(curl -fsSL "${COMMUNITY_SCRIPTS_CORE_URL}/pve/vm-core.func")
@@ -14,25 +13,15 @@ source <(curl -fsSL "${COMMUNITY_SCRIPTS_CORE_URL}/pve/vm-core.func")
 load_functions
 
 ARCH=$(dpkg --print-architecture)
-GEN_MAC=02:$(openssl rand -hex 5 | awk '{print toupper($0)}' | sed 's/\(..\)/\1:/g; s/.$//')
+
+GEN_MAC="02:$(openssl rand -hex 5 | tr '[:lower:]' '[:upper:]' | sed 's/\(..\)/\1:/g; s/:$//')"
 
 METHOD=""
 DISK_SIZE="16G"
 
-var_os="ubuntu"
-var_version="24.04"
-
-OS_TYPE="ubuntu"
-OS_VERSION="24.04"
-OS_CODENAME="noble"
-OS_DISPLAY="Ubuntu 24.04 LTS"
-
-USE_CLOUD_INIT="yes"
-
 default_settings() {
-
-
 vm_apply_machine_type "q35"
+
 
 VMID=$(get_valid_nextid)
 
@@ -67,9 +56,8 @@ vm_echo_default_settings
 }
 
 advanced_settings() {
-
-
 METHOD="advanced"
+
 
 vm_prompt_vmid "${VMID:-$(get_valid_nextid)}"
 vm_prompt_machine_type "q35"
@@ -86,14 +74,12 @@ vm_prompt_mtu
 vm_prompt_verbose "no"
 vm_prompt_start_vm "yes"
 
-if vm_confirm_advanced_settings "Ready to create a Zabbix Proxy VM?"; then
+if vm_confirm_advanced_settings "Ready to continue with the Zabbix Proxy VM settings?"; then
     echo
     echo "Configuração Advanced confirmada."
-    echo "Nenhuma VM será criada neste teste."
 else
     header_info
-    echo
-    echo "Using Advanced Settings"
+    echo -e "${ADVANCED}${BOLD}${RD}Using Advanced Settings${CL}"
     advanced_settings
 fi
 
@@ -101,14 +87,11 @@ fi
 }
 
 header_info() {
-
-
 echo
 echo "========================================"
 echo "          ZABBIX PROXY VM"
 echo "========================================"
-
-
+echo
 }
 
 header_info
@@ -117,19 +100,8 @@ vm_preflight
 
 vm_start_script "Use Default Settings?" 10 58
 
+vm_select_storage "$HN"
+
 echo
 echo "========================================"
-echo "             RESULTADO"
-echo "========================================"
-echo
-echo "Método escolhido : ${METHOD}"
-echo "VM ID            : ${VMID}"
-echo "Hostname         : ${HN}"
-echo "CPU              : ${CORE_COUNT} cores"
-echo "RAM              : ${RAM_SIZE} MiB"
-echo "Disco            : ${DISK_SIZE}"
-echo "Bridge           : ${BRG}"
-echo "MAC              : ${MAC}"
-echo
-echo "Nenhuma VM foi criada."
-echo "Nenhum pacote foi instalado."
+echo "             RES
